@@ -20,27 +20,6 @@ const pageTitles = {
   recommendation: ["Análisis del caso", "Hallazgos importantes para tomar una decisión."],
 };
 
-function Topbar({ onReset, active, onMenu }) {
-  const [title, subtitle] = pageTitles[active];
-  return (
-    <header className="sticky top-0 z-30 border-b border-tueste-line bg-tueste-paper/95 backdrop-blur">
-      <div className="flex min-h-[76px] flex-wrap items-center gap-3 px-4 py-3 sm:px-6 lg:px-8">
-        <MobileMenuButton onClick={onMenu} />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-tueste-orange">
-            <Coffee size={13} /> CASO A · RETO NIVEL 2
-          </div>
-          <h1 className="mt-1 truncate text-lg font-bold text-tueste-ink sm:text-xl">{title}</h1>
-          <p className="hidden text-xs text-tueste-muted sm:block">{subtitle}</p>
-        </div>
-        <button onClick={onReset} className="inline-flex items-center gap-2 rounded-xl border border-tueste-line bg-white px-3 py-2.5 text-xs font-bold text-tueste-deep transition hover:bg-tueste-cream sm:px-4 sm:text-sm">
-          <RotateCcw size={15} /> <span className="hidden sm:inline">Restaurar datos</span><span className="sm:hidden">Restaurar</span>
-        </button>
-      </div>
-    </header>
-  );
-}
-
 function PageIntro({ eyebrow, title, note }) {
   return <SectionHeading eyebrow={eyebrow} title={title} note={note} />;
 }
@@ -57,7 +36,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-tueste-paper text-tueste-ink lg:flex">
+    <div className="flex h-screen overflow-hidden bg-tueste-paper text-tueste-ink">
       <Sidebar
         active={active}
         onNavigate={setActive}
@@ -65,12 +44,25 @@ export default function Dashboard() {
         onClose={() => setMobileOpen(false)}
       />
 
-      <div className="min-w-0 flex-1">
-        <Topbar active={active} onReset={resetInputs} onMenu={() => setMobileOpen(true)} />
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
+          <div className="mx-auto flex max-w-[1500px] items-center gap-3 px-4 pb-5 pt-5 sm:px-6 lg:px-8 lg:pb-6 lg:pt-6">
+            <MobileMenuButton onClick={() => setMobileOpen(true)} />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 text-[10px] font-bold tracking-[.16em] text-tueste-orange">
+                <Coffee size={13} /> CASO A · RETO NIVEL 2
+              </div>
+              <h1 className="mt-1 truncate text-xl font-bold text-tueste-ink sm:text-2xl">{pageTitles[active][0]}</h1>
+              <p className="hidden text-xs text-tueste-muted sm:block">{pageTitles[active][1]}</p>
+            </div>
+            <button onClick={resetInputs} className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-tueste-line bg-white px-3 py-2 text-xs font-bold text-tueste-deep transition hover:bg-tueste-cream sm:px-4 sm:py-2.5 sm:text-sm">
+              <RotateCcw size={14} /> <span className="hidden sm:inline">Restaurar datos</span><span className="sm:hidden">Restaurar</span>
+            </button>
+          </div>
 
-        <main className="mx-auto max-w-[1500px] px-4 py-7 sm:px-6 lg:px-8 lg:py-9">
+          <div className="mx-auto max-w-[1500px] px-4 pb-8 sm:px-6 lg:px-8 lg:pb-10">
           {active === "overview" && (
-            <div className="space-y-8">
+            <div className="space-y-6">
               <section className="rounded-2xl bg-gradient-to-br from-tueste-orange to-tueste-deep p-6 text-white shadow-soft sm:p-8">
                 <div className="flex flex-wrap items-end justify-between gap-5">
                   <div className="max-w-2xl">
@@ -111,14 +103,12 @@ export default function Dashboard() {
 
           {active === "controls" && (
             <div className="space-y-6">
-              <PageIntro eyebrow="01 · CONFIGURACIÓN" title="Supuestos del modelo" note="Cambia los valores para simular el comportamiento financiero." />
               <ControlsPanel inputs={inputs} onChange={updateInput} />
             </div>
           )}
 
           {active === "indicators" && (
             <div className="space-y-7">
-              <PageIntro eyebrow="02 · MÉTRICAS" title="Indicadores financieros" note="Cada indicador muestra su nombre, valor y unidad." />
               <KpiGrid result={result} />
               <ThresholdPanel result={result} />
             </div>
@@ -126,7 +116,6 @@ export default function Dashboard() {
 
           {active === "scenarios" && (
             <div className="space-y-6">
-              <PageIntro eyebrow="03 · COMPARACIÓN" title="Escenarios financieros" note="Contrasta las opciones del caso con los supuestos que has seleccionado." />
               <ScenarioTable scenarios={scenarios} selected={selectedScenario} />
               <div className="rounded-xl border-l-4 border-tueste-yellow bg-amber-50 p-4 text-xs leading-relaxed text-amber-950">
                 <strong>Nota:</strong> la propuesta de agencia utiliza la inversión de $16.000 y un descuento del 30%; la alternativa propia utiliza $4.000 sin fee de agencia. Verifica estos supuestos contra el caso antes de entregar.
@@ -136,14 +125,12 @@ export default function Dashboard() {
 
           {active === "charts" && (
             <div className="space-y-6">
-              <PageIntro eyebrow="04 · VISUALIZACIÓN" title="Gráficos financieros" note="Los gráficos responden a los supuestos del modelo." />
               <ChartsSection result={result} scenarios={scenarios} inputs={inputs} />
             </div>
           )}
 
           {active === "recommendation" && (
             <div className="space-y-6">
-              <PageIntro eyebrow="05 · INTERPRETACIÓN" title="Análisis y recomendación" note="Hallazgos que ayudan a interpretar los resultados del modelo." />
               <ThresholdPanel result={result} />
               <section className="rounded-2xl border border-tueste-line border-l-4 border-l-tueste-orange bg-white p-6 shadow-soft sm:p-8">
                 <p className="mb-2 text-[10px] font-bold tracking-[.2em] text-tueste-orange">LECTURA DEL CASO</p>
@@ -163,10 +150,7 @@ export default function Dashboard() {
               </section>
             </div>
           )}
-
-          <footer className="mt-12 border-t border-tueste-line py-6 text-center text-[11px] text-tueste-muted">
-            Tueste · Tablero financiero · Reto Nivel 2
-          </footer>
+          </div>
         </main>
       </div>
     </div>
