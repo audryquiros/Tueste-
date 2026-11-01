@@ -12,3 +12,10 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 button, input { font: inherit; }
+
+/* Gráficos responsivos: evita desbordamientos en tarjetas y pantallas estrechas. */
+.recharts-responsive-container { min-width: 0 !important; }
+.recharts-default-tooltip { box-shadow: 0 8px 24px rgba(83,48,22,.08); }
+
+html { scroll-behavior: smooth; }
+button { -webkit-tap-highlight-color: transparent; }

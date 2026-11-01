@@ -22,7 +22,7 @@ export default function ScenarioTable({ scenarios, selected }) {
         <tbody>{rows.map(([label, render], i) => <tr className={i % 2 ? "bg-tueste-cream" : ""} key={label}>
           <td className="p-3 font-semibold">{label}</td>
           {scenarios.map((s) => <td className="p-3 tabular-nums" key={s.key}>{render(s.result)}</td>)}
-          <td className="p-3 font-semibold text-tueste-deep">{render(selected)}</td>
+          <td className="p-3 font-semibold text-tueste-deep">{render(selected.result)}</td>
         </tr>)}</tbody>
       </table>
     </div>

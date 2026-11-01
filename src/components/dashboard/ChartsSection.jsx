@@ -1,6 +1,6 @@
 import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ReferenceLine, ScatterChart, Scatter, BarChart, Bar, Legend, Cell
+  ReferenceLine, ReferenceDot, ScatterChart, Scatter, BarChart, Bar, Legend, Cell, LabelList
 } from "recharts";
 import { CASE_DATA } from "../../services/caseData";
 import { estimateNewCustomers, getMarginalCAC } from "../../services/financialModel";
@@ -10,7 +10,7 @@ function ChartCard({ title, subtitle, children, className = "" }) {
   return (
     <article className={`rounded-2xl border border-tueste-line bg-white p-4 shadow-soft sm:p-5 ${className}`}>
       <div className="mb-4"><h3 className="font-semibold">{title}</h3><p className="mt-1 text-[11px] text-tueste-muted">{subtitle}</p></div>
-      <div className="h-[280px] w-full">{children}</div>
+      <div className="w-full min-w-0">{children}</div>
     </article>
   );
 }
@@ -36,6 +36,7 @@ export default function ChartsSection({ result, scenarios, inputs }) {
   return (
     <div className="grid gap-4 xl:grid-cols-2">
       <ChartCard title="Curva de caja de un cliente" subtitle="Caja acumulada después de pagar el CAC.">
+        <div className="h-[280px] w-full min-w-0">
         <ResponsiveContainer>
           <LineChart data={cashData} margin={{ top: 10, right: 12, left: 5, bottom: 4 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eadfd7" />
@@ -49,9 +50,11 @@ export default function ChartsSection({ result, scenarios, inputs }) {
             <Line type="monotone" dataKey="alternative" name="Alternativa propia" stroke="#E2A52B" strokeWidth={2.5} dot={false} />
           </LineChart>
         </ResponsiveContainer>
+        </div>
       </ChartCard>
 
       <ChartCard title="LTV frente al CAC" subtitle="Comparación con líneas de referencia 1:1 y 3:1.">
+        <div className="h-[280px] w-full min-w-0">
         <ResponsiveContainer>
           <ScatterChart margin={{ top: 18, right: 20, left: 8, bottom: 18 }}>
             <CartesianGrid stroke="#eadfd7" />
@@ -63,42 +66,81 @@ export default function ChartsSection({ result, scenarios, inputs }) {
             <Scatter data={ltvData} fill="#B85D08" />
           </ScatterChart>
         </ResponsiveContainer>
+        </div>
       </ChartCard>
 
       <ChartCard title="Clientes nuevos según inversión" subtitle="Historial del caso y punto de inversión seleccionado." className="xl:col-span-2">
+        <div className="h-[300px] w-full min-w-0">
         <ResponsiveContainer>
-          <LineChart data={customerData} margin={{ top: 10, right: 18, left: 5, bottom: 5 }}>
+          <LineChart data={customerData} margin={{ top: 16, right: 24, left: 8, bottom: 12 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eadfd7" />
-            <XAxis dataKey="investment" tickFormatter={(v) => `$${v / 1000}k`} tick={{ fontSize: 10 }} />
+            <XAxis
+              dataKey="investment"
+              type="number"
+              domain={[0, 20000]}
+              ticks={[0, 4000, 8000, 12000, 16000, 20000]}
+              tickFormatter={(v) => `$${v / 1000}k`}
+              tick={{ fontSize: 11 }}
+              axisLine={{ stroke: "#b9aaa0" }}
+              tickLine={false}
+            />
             <YAxis tick={{ fontSize: 10 }} />
             <Tooltip contentStyle={tooltipStyle} formatter={(v, name) => [name === "clients" ? number(v) : money(v), name === "clients" ? "Clientes nuevos" : "CAC marginal"]} labelFormatter={(v) => `Inversión: ${money(v)}`} />
-            <Line type="monotone" dataKey="clients" name="Clientes nuevos" stroke="#4D83C6" strokeWidth={2.5} />
-            <ReferenceLine x={inputs.investment} stroke="#B85D08" strokeDasharray="5 4" label={{ value: "Elegido", fill: "#B85D08", fontSize: 10 }} />
+            <Line
+              type="monotone"
+              dataKey="clients"
+              name="Clientes nuevos"
+              stroke="#4D83C6"
+              strokeWidth={3}
+              dot={{ r: 4, fill: "#fff", stroke: "#4D83C6", strokeWidth: 2 }}
+              activeDot={{ r: 6 }}
+            />
+            <ReferenceLine
+              x={inputs.investment}
+              stroke="#B85D08"
+              strokeDasharray="5 5"
+              strokeWidth={2}
+              label={{ value: "Inversión elegida", fill: "#B85D08", fontSize: 11, position: "insideTopRight" }}
+            />
+            <ReferenceDot
+              x={selectedPoint.investment}
+              y={selectedPoint.clients}
+              r={6}
+              fill="#B85D08"
+              stroke="#fff"
+              strokeWidth={2}
+            />
           </LineChart>
         </ResponsiveContainer>
-        <div className="mt-2 flex flex-wrap gap-2">
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {CASE_DATA.history.slice(1).map((point, index) => {
             const previous = CASE_DATA.history[index];
             const marginal = (point.investment - previous.investment) / (point.clients - previous.clients);
-            return <span className="rounded-lg border border-tueste-line bg-tueste-cream px-3 py-2 text-[10px] text-tueste-muted" key={point.investment}>
-              ${previous.investment / 1000}k–${point.investment / 1000}k <b className="block text-tueste-deep">{money(marginal)} / cliente</b>
+            return <span className="rounded-xl border border-tueste-line bg-tueste-cream px-3 py-3 text-[11px] leading-relaxed text-tueste-muted" key={point.investment}>
+              <span className="block">{`$${previous.investment / 1000}k–$${point.investment / 1000}k`}</span>
+              <b className="mt-1 block text-sm text-tueste-deep">{money(marginal)}</b>
+              <span className="block text-[10px]">CAC marginal / cliente</span>
             </span>;
           })}
         </div>
       </ChartCard>
 
       <ChartCard title="La trampa del ROAS" subtitle="Ads Manager vs. primer pedido vs. break-even." className="xl:col-span-2">
+        <div className="h-[300px] w-full min-w-0">
         <ResponsiveContainer>
           <BarChart data={roasData} margin={{ top: 18, right: 18, left: 5, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eadfd7" />
             <XAxis dataKey="name" tick={{ fontSize: 11 }} />
             <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `${v}x`} />
             <Tooltip contentStyle={tooltipStyle} formatter={(v) => ratio(v)} />
-            <Bar dataKey="value" name="ROAS" radius={[7, 7, 0, 0]}>
+            <Bar dataKey="value" name="ROAS" radius={[8, 8, 0, 0]} maxBarSize={110}>
               {roasData.map((entry) => <Cell key={entry.name} fill={entry.fill} />)}
+              <LabelList dataKey="value" position="top" formatter={(value) => ratio(value)} style={{ fill: "#51463f", fontSize: 12, fontWeight: 700 }} />
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+        </div>
       </ChartCard>
     </div>
   );

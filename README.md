@@ -97,3 +97,16 @@ Los clientes entre puntos se estiman mediante interpolación lineal.
 ## Nota
 
 El proyecto no incluye backend ni requiere Supabase: el reto pide una página interactiva que abra en navegador y use el modelo completo de Tueste. Los datos viven localmente en el código.
+
+
+## Navegación lateral
+
+El tablero está dividido en seis vistas para evitar una página demasiado larga:
+- Resumen
+- Supuestos
+- Indicadores
+- Escenarios
+- Gráficos
+- Análisis
+
+En escritorio, el sidebar queda fijo a la izquierda. En móvil, se abre como menú deslizable mediante el botón «Menú». El estado de los supuestos se conserva al cambiar de sección porque el hook del modelo vive en la página principal.
