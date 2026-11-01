@@ -123,3 +123,17 @@ Cada página sigue la misma convención:
 `src/pages/Dashboard/Dashboard.css`.
 
 Los estilos globales permanecen en `src/index.css`. No crear componentes JSX sueltos dentro de las carpetas de categoría.
+
+
+## Entrega sin instalar nada (reglamento del reto)
+
+La persona evaluadora debe poder abrir el tablero mediante un enlace web. No necesita instalar software ni dependencias. Consulta `ENTREGA_SIN_INSTALAR.md` para publicar la carpeta `dist/` como sitio estático mediante arrastrar y soltar.
+
+## Criterios de presentación de datos
+
+Cada indicador debe mostrar:
+- nombre descriptivo;
+- valor;
+- unidad (USD, USD/cliente, USD/pedido, porcentaje, veces, clientes o meses).
+
+Los gráficos también identifican las unidades de sus ejes y las series. Evitar etiquetas genéricas como «Variable 3».

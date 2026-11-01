@@ -19,7 +19,7 @@ const tooltipStyle = { borderRadius: 12, border: "1px solid #EAD6C8", fontSize: 
 
 export default function ChartsSection({ result, scenarios, inputs }) {
   const cashData = Array.from({ length: 13 }, (_, month) => {
-    const row = { month };
+    const row = { month, selected: result.cashCurve[month]?.value ?? null };
     scenarios.forEach((s) => { row[s.key] = s.result.cashCurve[month]?.value ?? null; });
     return row;
   });
@@ -36,31 +36,32 @@ export default function ChartsSection({ result, scenarios, inputs }) {
   ];
   return (
     <div className="grid gap-4 xl:grid-cols-2">
-      <ChartCard title="Curva de caja de un cliente" subtitle="Caja acumulada después de pagar el CAC.">
+      <ChartCard title="Curva de caja de un cliente" subtitle="Caja acumulada (USD/cliente) después de pagar el CAC, incluyendo el escenario elegido.">
         <div className="h-[280px] w-full min-w-0">
         <ResponsiveContainer>
           <LineChart data={cashData} margin={{ top: 10, right: 12, left: 5, bottom: 4 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eadfd7" />
-            <XAxis dataKey="month" tick={{ fontSize: 11 }} label={{ value: "Mes", position: "insideBottom", offset: -2, fontSize: 11 }} />
-            <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${Math.round(v)}`} />
+            <XAxis dataKey="month" tick={{ fontSize: 11 }} label={{ value: "Tiempo (meses)", position: "insideBottom", offset: -2, fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${Math.round(v)}`} label={{ value: "Caja acumulada (USD/cliente)", angle: -90, position: "insideLeft", fontSize: 10 }} />
             <Tooltip contentStyle={tooltipStyle} formatter={(v) => money(v)} labelFormatter={(v) => `Mes ${v}`} />
             <ReferenceLine y={0} stroke="#4f4944" strokeDasharray="5 4" />
             <Legend wrapperStyle={{ fontSize: 11 }} />
             <Line type="monotone" dataKey="today" name="Hoy" stroke="#4D83C6" strokeWidth={2.5} dot={false} />
             <Line type="monotone" dataKey="agency" name="Agencia" stroke="#D9534F" strokeWidth={2.5} dot={false} />
             <Line type="monotone" dataKey="alternative" name="Alternativa propia" stroke="#E2A52B" strokeWidth={2.5} dot={false} />
+            <Line type="monotone" dataKey="selected" name="Escenario elegido" stroke="#B85D08" strokeWidth={3} strokeDasharray="6 3" dot={false} />
           </LineChart>
         </ResponsiveContainer>
         </div>
       </ChartCard>
 
-      <ChartCard title="LTV frente al CAC" subtitle="Comparación con líneas de referencia 1:1 y 3:1.">
+      <ChartCard title="LTV frente al CAC" subtitle="LTV y CAC en USD/cliente; líneas de referencia de relación 1:1 y 3:1.">
         <div className="h-[280px] w-full min-w-0">
         <ResponsiveContainer>
           <ScatterChart margin={{ top: 18, right: 20, left: 8, bottom: 18 }}>
             <CartesianGrid stroke="#eadfd7" />
-            <XAxis type="number" dataKey="cac" name="CAC" tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "CAC (USD)", position: "insideBottom", offset: -10, fontSize: 11 }} />
-            <YAxis type="number" dataKey="ltv" name="LTV" tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "LTV (USD)", angle: -90, position: "insideLeft", fontSize: 11 }} />
+            <XAxis type="number" dataKey="cac" name="CAC" tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "CAC (USD/cliente)", position: "insideBottom", offset: -10, fontSize: 11 }} />
+            <YAxis type="number" dataKey="ltv" name="LTV" tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "LTV (USD/cliente)", angle: -90, position: "insideLeft", fontSize: 11 }} />
             <Tooltip contentStyle={tooltipStyle} formatter={(v) => money(v)} />
             <ReferenceLine segment={[{ x: 0, y: 0 }, { x: Math.max(result.cacReal, result.ltv) * 1.1, y: Math.max(result.cacReal, result.ltv) * 1.1 }]} stroke="#D9A329" strokeDasharray="5 4" label={{ value: "1:1", fontSize: 10 }} />
             <ReferenceLine segment={[{ x: 0, y: 0 }, { x: Math.max(result.cacReal, result.ltv / 3) * 1.1, y: Math.max(result.cacReal, result.ltv / 3) * 3.3 }]} stroke="#32835B" strokeDasharray="5 4" label={{ value: "3:1", fontSize: 10 }} />
@@ -70,7 +71,7 @@ export default function ChartsSection({ result, scenarios, inputs }) {
         </div>
       </ChartCard>
 
-      <ChartCard title="Clientes nuevos según inversión" subtitle="Historial del caso y punto de inversión seleccionado." className="xl:col-span-2">
+      <ChartCard title="Clientes nuevos según inversión" subtitle="Clientes nuevos (personas) y CAC marginal (USD/cliente) por tramo de inversión." className="xl:col-span-2">
         <div className="h-[300px] w-full min-w-0">
         <ResponsiveContainer>
           <LineChart data={customerData} margin={{ top: 16, right: 24, left: 8, bottom: 12 }}>
@@ -82,13 +83,16 @@ export default function ChartsSection({ result, scenarios, inputs }) {
               ticks={[0, 4000, 8000, 12000, 16000, 20000]}
               tickFormatter={(v) => `$${v / 1000}k`}
               tick={{ fontSize: 11 }}
+              label={{ value: "Inversión en Meta (USD)", position: "insideBottom", offset: -5, fontSize: 10 }}
               axisLine={{ stroke: "#b9aaa0" }}
               tickLine={false}
             />
-            <YAxis tick={{ fontSize: 10 }} />
-            <Tooltip contentStyle={tooltipStyle} formatter={(v, name) => [name === "clients" ? number(v) : money(v), name === "clients" ? "Clientes nuevos" : "CAC marginal"]} labelFormatter={(v) => `Inversión: ${money(v)}`} />
+            <YAxis yAxisId="clients" tick={{ fontSize: 10 }} label={{ value: "Clientes (personas)", angle: -90, position: "insideLeft", fontSize: 10 }} />
+            <YAxis yAxisId="cac" orientation="right" tick={{ fontSize: 10 }} tickFormatter={(v) => `$${Math.round(v)}`} label={{ value: "CAC marginal (USD/cliente)", angle: 90, position: "insideRight", fontSize: 10 }} />
+            <Tooltip contentStyle={tooltipStyle} formatter={(v, name) => [name === "clients" ? `${number(v)} clientes` : money(v), name === "clients" ? "Clientes nuevos" : "CAC marginal"]} labelFormatter={(v) => `Inversión: ${money(v)}`} />
             <Line
               type="monotone"
+              yAxisId="clients"
               dataKey="clients"
               name="Clientes nuevos"
               stroke="#4D83C6"
@@ -96,7 +100,19 @@ export default function ChartsSection({ result, scenarios, inputs }) {
               dot={{ r: 4, fill: "#fff", stroke: "#4D83C6", strokeWidth: 2 }}
               activeDot={{ r: 6 }}
             />
+            <Line
+              yAxisId="cac"
+              type="stepAfter"
+              dataKey="marginal"
+              name="CAC marginal"
+              stroke="#D98170"
+              strokeWidth={2}
+              strokeDasharray="5 4"
+              connectNulls={false}
+              dot={{ r: 3 }}
+            />
             <ReferenceLine
+              yAxisId="clients"
               x={inputs.investment}
               stroke="#B85D08"
               strokeDasharray="5 5"
@@ -106,6 +122,7 @@ export default function ChartsSection({ result, scenarios, inputs }) {
             <ReferenceDot
               x={selectedPoint.investment}
               y={selectedPoint.clients}
+              yAxisId="clients"
               r={6}
               fill="#B85D08"
               stroke="#fff"
@@ -127,14 +144,15 @@ export default function ChartsSection({ result, scenarios, inputs }) {
         </div>
       </ChartCard>
 
-      <ChartCard title="La trampa del ROAS" subtitle="Ads Manager vs. primer pedido vs. break-even." className="xl:col-span-2">
+      <ChartCard title="La trampa del ROAS" subtitle="ROAS en veces: Ads Manager (3,0x), primer pedido y umbral de break-even." className="xl:col-span-2">
         <div className="h-[300px] w-full min-w-0">
         <ResponsiveContainer>
           <BarChart data={roasData} margin={{ top: 18, right: 18, left: 5, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#eadfd7" />
             <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-            <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `${v}x`} />
+            <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `${v}x`} label={{ value: "ROAS (veces)", angle: -90, position: "insideLeft", fontSize: 10 }} />
             <Tooltip contentStyle={tooltipStyle} formatter={(v) => ratio(v)} />
+            <ReferenceLine y={result.breakEvenROAS} stroke="#32835B" strokeWidth={2} strokeDasharray="6 4" label={{ value: `Break-even ${ratio(result.breakEvenROAS)}`, fill: "#32835B", fontSize: 10, position: "insideTopRight" }} />
             <Bar dataKey="value" name="ROAS" radius={[8, 8, 0, 0]} maxBarSize={110}>
               {roasData.map((entry) => <Cell key={entry.name} fill={entry.fill} />)}
               <LabelList dataKey="value" position="top" formatter={(value) => ratio(value)} style={{ fill: "#51463f", fontSize: 12, fontWeight: 700 }} />

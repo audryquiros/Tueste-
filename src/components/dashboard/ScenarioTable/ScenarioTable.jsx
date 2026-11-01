@@ -4,13 +4,13 @@ import "./ScenarioTable.css";
 
 export default function ScenarioTable({ scenarios, selected }) {
   const rows = [
-    ["Inversión Meta", (r) => money(r.params.investment)],
-    ["Clientes nuevos", (r) => number(r.newCustomers)],
-    ["CAC de anuncios", (r) => money(r.cacAds)],
-    ["CAC real", (r) => money(r.cacReal)],
-    ["LTV promedio", (r) => money(r.ltv)],
-    ["LTV:CAC", (r) => ratio(r.ltvCac)],
-    ["Payback", (r) => r.payback ? `${r.payback} meses` : "Más de 12"],
+    ["Inversión en Meta (USD/mes)", (r) => money(r.params.investment)],
+    ["Clientes nuevos (personas)", (r) => `${number(r.newCustomers)} clientes`],
+    ["CAC de anuncios (USD/cliente)", (r) => money(r.cacAds)],
+    ["CAC real (USD/cliente)", (r) => money(r.cacReal)],
+    ["LTV promedio (USD/cliente)", (r) => money(r.ltv)],
+    ["LTV:CAC (veces)", (r) => ratio(r.ltvCac)],
+    ["Payback (meses)", (r) => r.payback ? `${r.payback} meses` : "Más de 12 meses"],
   ];
   return (
     <div className="overflow-x-auto rounded-2xl border border-tueste-line bg-white shadow-soft">

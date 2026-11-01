@@ -9,6 +9,7 @@ export default function ControlField({ label, value, displayValue, min, max, ste
       <input
         className={type === "range" ? "w-full accent-tueste-orange" : "w-full rounded-lg border border-orange-200 bg-white px-3 py-2 text-sm"}
         type={type}
+        aria-label={`${label}${type === "range" ? " (control deslizante)" : ""}`}
         min={min}
         max={max}
         step={step}
