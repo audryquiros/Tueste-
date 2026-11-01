@@ -1,3 +1,4 @@
+import "./SectionHeading.css";
 export default function SectionHeading({ eyebrow, title, note }) {
   return (
     <div className="mb-5 flex flex-wrap items-end justify-between gap-3">

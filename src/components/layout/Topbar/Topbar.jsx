@@ -1,4 +1,5 @@
 import { RotateCcw, Coffee } from "lucide-react";
+import "./Topbar.css";
 
 export default function Topbar({ onReset }) {
   return (

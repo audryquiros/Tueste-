@@ -3,22 +3,28 @@
 ## Tecnologías
 - React + Vite
 - Tailwind CSS
-- Recharts para gráficos
-- Lucide React para iconografía
+- Recharts
+- Lucide React
 
-## Organización
-- Cada página vive en su propia carpeta dentro de `src/pages` y contiene su JSX y CSS.
-- Componentes reutilizables en `src/components`.
-- Cálculos y lógica financiera en `src/services` y `src/utils`.
-- Hooks reutilizables en `src/hooks`.
-- Navegación centralizada en `src/routes`.
-- `App.jsx` solo compone la aplicación; `main.jsx` monta React.
+## Organización obligatoria
+- Cada componente vive en su propia carpeta y contiene `NombreComponente.jsx` y `NombreComponente.css`.
+- Cada página vive en su propia carpeta y contiene `NombrePagina.jsx` y `NombrePagina.css`.
+- No colocar JSX de componentes directamente en carpetas compartidas sin su carpeta propia.
+- Mantener nombres de carpetas y archivos en PascalCase para componentes y páginas.
+- Los estilos globales van únicamente en `src/index.css`.
+- Los estilos específicos pertenecen al CSS junto al JSX correspondiente.
 
-## Reglas
+## Responsabilidades
+- `components/`: componentes reutilizables, cada uno en su carpeta.
+- `pages/`: páginas completas, cada una en su carpeta.
+- `routes/`: navegación.
+- `services/`: datos y lógica financiera.
+- `hooks/`: hooks reutilizables.
+- `utils/`: funciones auxiliares.
+- `assets/`: recursos estáticos.
+
+## Reglas de código
 - No mezclar fórmulas financieras con componentes visuales.
-- No duplicar valores del caso: centralizarlos en `src/services/caseData.js`.
-- Todos los indicadores deben mostrar nombre y unidad.
-- Los controles actualizan el tablero en vivo.
-- Mantener responsive para móvil, tablet y escritorio.
-- Conservar la paleta Tueste: naranja tostado, coral y crema.
-- No inventar datos de referencia; documentar supuestos y fuentes.
+- Centralizar los datos del caso en `src/services/caseData.js`.
+- Mantener los controles reactivos y el diseño responsive.
+- No inventar datos ni supuestos; documentar lo que falte validar.

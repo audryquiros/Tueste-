@@ -110,3 +110,16 @@ El tablero está dividido en seis vistas para evitar una página demasiado larga
 - Análisis
 
 En escritorio, el sidebar queda fijo a la izquierda. En móvil, se abre como menú deslizable mediante el botón «Menú». El estado de los supuestos se conserva al cambiar de sección porque el hook del modelo vive en la página principal.
+
+
+## Convención de componentes y páginas
+
+Cada componente tiene su propia carpeta y sus dos archivos:
+`src/components/dashboard/KpiCard/KpiCard.jsx` y
+`src/components/dashboard/KpiCard/KpiCard.css`.
+
+Cada página sigue la misma convención:
+`src/pages/Dashboard/Dashboard.jsx` y
+`src/pages/Dashboard/Dashboard.css`.
+
+Los estilos globales permanecen en `src/index.css`. No crear componentes JSX sueltos dentro de las carpetas de categoría.

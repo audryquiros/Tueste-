@@ -8,6 +8,7 @@ import {
   X,
   Menu,
 } from "lucide-react";
+import "./Sidebar.css";
 
 const navigation = [
   { id: "overview", label: "Resumen", description: "Vista general", icon: LayoutDashboard },

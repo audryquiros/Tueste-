@@ -1,6 +1,7 @@
-import ControlField from "./ControlField";
-import SectionHeading from "../ui/SectionHeading";
-import { money, number } from "../../utils/formatters";
+import ControlField from "../ControlField/ControlField";
+import SectionHeading from "../../ui/SectionHeading/SectionHeading";
+import { money, number } from "../../../utils/formatters";
+import "./ControlsPanel.css";
 
 export default function ControlsPanel({ inputs, onChange }) {
   const controls = [

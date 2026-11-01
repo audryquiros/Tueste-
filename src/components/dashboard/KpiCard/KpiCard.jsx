@@ -1,3 +1,4 @@
+import "./KpiCard.css";
 export default function KpiCard({ label, value, note, tone = "default" }) {
   const tones = {
     default: "border-t-tueste-coral",

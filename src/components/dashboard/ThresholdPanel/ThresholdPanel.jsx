@@ -1,4 +1,5 @@
-import { money, ratio } from "../../utils/formatters";
+import { money, ratio } from "../../../utils/formatters";
+import "./ThresholdPanel.css";
 
 export default function ThresholdPanel({ result }) {
   const tone = result.ltvCac < 1 ? "text-tueste-red" : result.ltvCac < 3 ? "text-yellow-700" : "text-tueste-green";

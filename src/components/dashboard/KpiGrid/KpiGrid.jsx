@@ -1,5 +1,6 @@
-import KpiCard from "./KpiCard";
-import { money, percent, ratio } from "../../utils/formatters";
+import KpiCard from "../KpiCard/KpiCard";
+import { money, percent, ratio } from "../../../utils/formatters";
+import "./KpiGrid.css";
 
 export default function KpiGrid({ result }) {
   const ratioTone = result.ltvCac < 1 ? "bad" : result.ltvCac < 3 ? "warn" : "good";

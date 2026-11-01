@@ -1,3 +1,4 @@
+import "./ControlField.css";
 export default function ControlField({ label, value, displayValue, min, max, step, onChange, help, type = "range" }) {
   return (
     <label className="block rounded-xl border border-orange-100 bg-tueste-cream p-4">

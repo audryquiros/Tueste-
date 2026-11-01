@@ -1,5 +1,6 @@
-import { CASE_DATA } from "../../services/caseData";
-import { money, number, ratio } from "../../utils/formatters";
+import { CASE_DATA } from "../../../services/caseData";
+import { money, number, ratio } from "../../../utils/formatters";
+import "./ScenarioTable.css";
 
 export default function ScenarioTable({ scenarios, selected }) {
   const rows = [

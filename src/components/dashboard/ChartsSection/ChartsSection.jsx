@@ -2,9 +2,10 @@ import {
   ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ReferenceLine, ReferenceDot, ScatterChart, Scatter, BarChart, Bar, Legend, Cell, LabelList
 } from "recharts";
-import { CASE_DATA } from "../../services/caseData";
-import { estimateNewCustomers, getMarginalCAC } from "../../services/financialModel";
-import { money, number, ratio } from "../../utils/formatters";
+import { CASE_DATA } from "../../../services/caseData";
+import { estimateNewCustomers, getMarginalCAC } from "../../../services/financialModel";
+import { money, number, ratio } from "../../../utils/formatters";
+import "./ChartsSection.css";
 
 function ChartCard({ title, subtitle, children, className = "" }) {
   return (
