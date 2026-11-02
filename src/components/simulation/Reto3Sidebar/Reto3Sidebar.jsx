@@ -14,7 +14,7 @@ const items = [
   { id: "overview", label: "Resumen", description: "Vista general", icon: LayoutDashboard },
   { id: "controls", label: "Configurar estrategia", description: "Define la inversión", icon: SlidersHorizontal },
   { id: "projection", label: "Proyección de caja", description: "Evolución de 24 meses", icon: ChartNoAxesCombined },
-  { id: "scenarios", label: "Comparar escenarios", description: "Evalúa los planes", icon: GitCompareArrows },
+  { id: "scenarios", label: "Planes y comparación", description: "Supuestos y resultados", icon: GitCompareArrows },
   { id: "monthly", label: "Detalle mensual", description: "Revisa los 24 meses", icon: Table2 },
   { id: "pitch", label: "Pitch de inversión", description: "Presenta tu propuesta", icon: Presentation },
 ];

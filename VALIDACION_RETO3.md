@@ -25,33 +25,22 @@
 9. Caja final: USD 35.000 + USD 9.000 + USD 3.265,43 - USD 15.500 = **USD 31.765,43**.
 
 ## Comparación de planes con el modelo implementado
-Los resultados siguientes usan el fee de agencia de USD 1.000 en todo mes con inversión. La propuesta de agencia aplica además 30 % de descuento únicamente al primer pedido de los clientes de pedidos sueltos.
+Supuesto de planes propios: se elimina el fee de agencia (USD 0), siguiendo la pestaña «Escenarios» del Excel del Reto 1, donde la alternativa propia tiene fee USD 0. El plan actual y la propuesta de agencia mantienen USD 1.000 por mes con inversión, como establece el contrato descrito en el caso. La propuesta de agencia aplica además 30 % de descuento únicamente al primer pedido de los clientes de pedidos sueltos.
 
 | Plan | Caja mínima | Mes mínimo | Caja mes 24 | Suscriptores activos mes 24 |
 |---|---:|---:|---:|---:|
 | Hoy · USD 8.000 fijos | USD 24.448 | 6 | USD 79.596 | 317 |
 | Agencia · USD 16.000 fijos | -USD 82.255 | 24 | -USD 82.255 | 421 |
-| Propio · USD 4.000 fijos | USD 34.764 | 1 | USD 95.566 | 220 |
-| Propio · escalonado (8k/4k/6k) | USD 24.448 | 6 | USD 89.579 | 265 |
+| Propio · USD 4.000 fijos (sin agencia) | USD 35.000 | Inicial | USD 119.566 | 220 |
+| Propio · escalonado (8k/4k/6k, sin agencia) | USD 29.547 | 4 | USD 113.579 | 265 |
 
-**Lectura:** entre estos cuatro planes de referencia, el plan propio de USD 4.000 fijos termina con la mayor caja. La propuesta de agencia rompe el piso de USD 5.000 y no es viable bajo estos supuestos.
+**Lectura:** entre estos cuatro planes, el plan propio de USD 4.000 fijos sin fee de agencia termina con la mayor caja y cumple las reglas. La propuesta de agencia rompe el piso de USD 5.000 y no es viable bajo estos supuestos.
 
 Estos son resultados del modelo del caso, no una garantía de resultados reales. El reglamento pide reproducir el plan del equipo con margen de 3 % frente al modelo de referencia del facilitador; esa comprobación externa todavía debe realizarse.
 
-## Verificación automatizada adicional
-Se agregó el comando `npm run test:simulation`, que valida:
-- Los puntos históricos y la interpolación lineal entre inversiones.
-- La revisión manual del mes 1 para USD 8.000 fijos.
-- Los resultados de los cuatro planes de referencia.
-- El piso mínimo de caja de USD 5.000.
-- La regla de inversión mínima desde el mes 13.
-- La proyección de exactamente 24 meses.
 
-Resultado de ejecución: **OK**.
-
-## Entregables de interfaz completados en esta revisión
-- Comparación de los cuatro planes de referencia más la estrategia personalizada en una tabla, con caja mínima, mes mínimo, caja del mes 24, suscriptores activos y cumplimiento de reglas.
-- Pitch dinámico de aproximadamente dos minutos, que incorpora presupuesto por etapas, resultados del plan seleccionado, comparación con los planes de referencia, riesgos y condiciones para aumentar la inversión.
-
-## Límite de validación externa
-La tolerancia de reproducción de 3 % solo puede confirmarse al comparar un plan idéntico contra el modelo de referencia del facilitador. Ese modelo externo no está incluido en los archivos disponibles, por lo que no se declara verificada esa tolerancia.
+## Alcance de la validación
+- La pestaña «Escenarios» del Excel del Reto 1 asigna fee de agencia USD 0 a la alternativa propia. Se aplica el mismo supuesto a los planes propios del nivel 3; debe declararse en la entrega como supuesto de continuidad.
+- El fee de USD 1.000 se conserva para «Hoy» y «Agencia» cuando hay inversión, según el contrato del caso.
+- La recomendación del comparador sigue ahora la regla literal del nivel 3: filtra planes que cumplen todas las restricciones, maximiza caja al mes 24 y solo usa suscriptores activos para desempatar.
+- No se puede certificar el margen de diferencia de 3 % contra el simulador del facilitador porque ese resultado de referencia no fue proporcionado. Los cálculos internos y la revisión manual del mes 1 sí pueden verificarse de forma independiente.

@@ -1,4 +1,4 @@
-import { ArrowRight, Coffee, BarChart3, WalletCards, Sparkles } from "lucide-react";
+import { ArrowRight, BarChart3, WalletCards, Sparkles } from "lucide-react";
 import "./Home.css";
 
 export default function Home({ onSelect }) {
@@ -6,7 +6,7 @@ export default function Home({ onSelect }) {
     <main className="home-page">
       <nav className="home-nav">
         <a className="home-brand" href="#inicio" aria-label="Tueste inicio">
-          <span className="home-brand-mark"><Coffee size={23} /></span>
+          <span className="home-brand-mark"><span>T</span></span>
           <span><strong>TUESTE</strong><small>TABLERO FINANCIERO</small></span>
         </a>
         <span className="home-case">CASO A <i /> E-COMMERCE</span>

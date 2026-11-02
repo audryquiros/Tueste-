@@ -1,4 +1,4 @@
-import { RotateCcw, Coffee } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import "./Topbar.css";
 
 export default function Topbar({ onReset }) {
@@ -6,7 +6,7 @@ export default function Topbar({ onReset }) {
     <header className="bg-tueste-orange text-white shadow-soft">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-5 py-5 lg:px-8">
         <div className="grid h-12 w-12 place-items-center rounded-2xl border-2 border-white/80">
-          <Coffee size={25} />
+          <span className="font-display text-2xl font-bold">T</span>
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-[10px] font-bold tracking-[.2em] text-orange-100">CASO A · RETO NIVEL 2</p>

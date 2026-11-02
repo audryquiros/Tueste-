@@ -21,7 +21,7 @@ const sections = {
   overview: { title: "Resumen", subtitle: "Indicadores y evolución de la caja del plan elegido." },
   controls: { title: "Configurar estrategia", subtitle: "Ajusta los montos de inversión para cada etapa." },
   projection: { title: "Proyección de caja", subtitle: "Consulta el saldo estimado y las reglas del modelo." },
-  scenarios: { title: "Comparar escenarios", subtitle: "Compara los resultados de cada alternativa." },
+  scenarios: { title: "Planes y comparación", subtitle: "Selecciona una alternativa y compara sus resultados con otros planes." },
   monthly: { title: "Detalle mensual", subtitle: "Consulta los movimientos que componen cada saldo." },
   pitch: { title: "Pitch de inversión", subtitle: "Prepara la presentación de tu estrategia." },
 };
@@ -102,6 +102,7 @@ function MonthOneReview() {
 export default function Reto3({ onHome }) {
   const [customValues, setCustomValues] = useState(initialCustom);
   const [selectedKey, setSelectedKey] = useState("own-4000");
+  const [compareKeys, setCompareKeys] = useState(["fixed-8000", "agency-16000"]);
   const [activeSection, setActiveSection] = useState("overview");
   const [mobileOpen, setMobileOpen] = useState(false);
   const referencePlans = useMemo(() => getReferencePlans(), []);
@@ -109,6 +110,11 @@ export default function Reto3({ onHome }) {
   const plans = useMemo(() => [...referencePlans, customPlan], [referencePlans, customPlan]);
   const selectedPlan = plans.find((plan) => plan.key === selectedKey) ?? customPlan;
   const activePage = sections[activeSection];
+  const toggleComparePlan = (key) => {
+    setCompareKeys((current) => current.includes(key)
+      ? current.filter((item) => item !== key)
+      : [...current, key]);
+  };
   const updateCustomValues = (updater) => {
     setCustomValues(updater);
     setSelectedKey("custom");
@@ -130,7 +136,6 @@ export default function Reto3({ onHome }) {
               <h1>{activePage.title}</h1>
               <p>{activePage.subtitle}</p>
             </div>
-
           </div>
           {activeSection === "overview" && <>
             <section className="reto3-overview-banner">
@@ -154,7 +159,7 @@ export default function Reto3({ onHome }) {
           </>}
 
           {activeSection === "scenarios" && <>
-            <PlanComparison plans={plans} selectedKey={selectedKey} onSelect={setSelectedKey} />
+            <PlanComparison plans={plans} selectedKey={selectedKey} onSelect={setSelectedKey} compareKeys={compareKeys} onToggleCompare={toggleComparePlan} />
             <div className="reto3-selection-callout"><strong>Plan seleccionado: {selectedPlan.name}</strong><span>Caja final estimada: {money(selectedPlan.endingCash)} · Caja mínima: {money(selectedPlan.minimumCash)}</span><button onClick={() => setActiveSection("projection")}>Ver su proyección →</button></div>
           </>}
 
@@ -164,7 +169,7 @@ export default function Reto3({ onHome }) {
 
           {activeSection === "pitch" && <>
             <KpiSummary plan={selectedPlan} />
-            <InvestorPitch plan={selectedPlan} plans={plans} />
+            <InvestorPitch plan={selectedPlan} />
           </>}
         </main>
         <footer className="reto3-footer">TUESTE · CASO A · SIMULADOR DE CAJA <span>Modelo educativo · Proyección de 24 meses</span></footer>

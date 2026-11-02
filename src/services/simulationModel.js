@@ -1,4 +1,4 @@
-import { CASE_DATA } from "./caseData.js";
+import { CASE_DATA } from "./caseData";
 
 export const SIMULATION_DEFAULTS = {
   startCash: 35000,
@@ -132,6 +132,8 @@ export function simulatePlan({
     floorBreaches: rows.filter((row) => row.belowFloor).length,
     ruleBreaches: rows.filter((row) => row.investmentRuleViolation).length,
     discountFirstOrder,
+    investments: schedule,
+    agencyFee,
   };
 }
 
@@ -157,7 +159,7 @@ export function getReferencePlans() {
       name: "Propio · $4.000 fijos",
       type: "Plan propio A",
       investments: Array(24).fill(4000),
-      agencyFee: 1000,
+      agencyFee: 0,
     },
     {
       key: "own-staged",
@@ -168,7 +170,7 @@ export function getReferencePlans() {
         ...Array(6).fill(4000),
         ...Array(12).fill(6000),
       ],
-      agencyFee: 1000,
+      agencyFee: 0,
     },
   ].map((plan) => ({
     ...simulatePlan(plan),
