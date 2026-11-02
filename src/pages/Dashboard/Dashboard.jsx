@@ -24,7 +24,7 @@ function PageIntro({ eyebrow, title, note }) {
   return <SectionHeading eyebrow={eyebrow} title={title} note={note} />;
 }
 
-export default function Dashboard() {
+export default function Dashboard({ onHome = () => {} }) {
   const { inputs, result, scenarios, updateInput, resetInputs } = useFinancialDashboard();
   const [active, setActive] = useState("overview");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -42,6 +42,7 @@ export default function Dashboard() {
         onNavigate={setActive}
         mobileOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
+        onHome={onHome}
       />
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">

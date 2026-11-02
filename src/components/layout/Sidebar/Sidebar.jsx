@@ -7,6 +7,7 @@ import {
   Lightbulb,
   X,
   Menu,
+  ArrowLeft,
 } from "lucide-react";
 import "./Sidebar.css";
 
@@ -19,7 +20,7 @@ const navigation = [
   { id: "recommendation", label: "Análisis", description: "Lectura del caso", icon: Lightbulb },
 ];
 
-export default function Sidebar({ active, onNavigate, mobileOpen, onClose }) {
+export default function Sidebar({ active, onNavigate, mobileOpen, onClose, onHome = () => {} }) {
   return (
     <>
       {mobileOpen && (
@@ -88,6 +89,12 @@ export default function Sidebar({ active, onNavigate, mobileOpen, onClose }) {
             <p className="text-xs font-bold text-tueste-deep">Reto · Nivel 2</p>
             <p className="mt-1 text-[11px] leading-relaxed text-tueste-muted">Explora los indicadores, modifica los supuestos y compara los escenarios de Tueste.</p>
           </div>
+          <button
+            onClick={onHome}
+            className="mt-3 inline-flex w-full items-center gap-2 rounded-xl border border-tueste-line bg-white px-3 py-3 text-left text-[11px] font-bold text-tueste-muted transition hover:bg-tueste-cream hover:text-tueste-deep"
+          >
+            <ArrowLeft size={16} /> Volver al inicio
+          </button>
           <p className="mt-4 text-center text-[10px] text-tueste-muted">Modelo financiero interactivo</p>
         </div>
       </aside>

@@ -137,3 +137,19 @@ Cada indicador debe mostrar:
 - unidad (USD, USD/cliente, USD/pedido, porcentaje, veces, clientes o meses).
 
 Los gráficos también identifican las unidades de sus ejes y las series. Evitar etiquetas genéricas como «Variable 3».
+
+
+## Reto 3 · Simulador de caja
+
+El módulo `/reto3` proyecta 24 meses con cohortes separadas. Usa los datos del Caso A:
+- Historial Meta: $0/0, $4.000/100, $8.000/165, $12.000/210, $16.000/235 y $20.000/250 clientes.
+- 47 clientes orgánicos nuevos por mes.
+- Mezcla 85 % pedidos sueltos y 15 % suscripción; churn mensual de 9 %.
+- Pedidos sueltos por edad de cohorte: patrón de meses 1–12 del caso y 0,10 pedidos mensuales de los meses 13–24.
+- Contribución de clientes actuales: $9.000 en el mes 1, con caída mensual de 3 %.
+- Costos fijos de $6.500 al mes; fee de agencia de $1.000 si hay inversión; caja inicial de $35.000 y piso de $5.000.
+- Desde el mes 13, la inversión no puede ser menor que el promedio mensual de los meses 1–12.
+
+La propuesta de agencia modela $16.000 mensuales y 30 % de descuento únicamente en el primer pedido de los clientes de pedidos sueltos. Los dos planes propios se muestran como estrategias comparables; el plan personalizado permite definir inversión para los meses 1–6, 7–12 y 13–24.
+
+Nota de modelado: el fee de agencia de USD 1.000 se aplica a cualquier plan que tenga inversión en Meta, conforme a la regla de salidas de la sección 7 del caso. La propuesta de agencia aplica además el 30 % de descuento al primer pedido de clientes sueltos.
