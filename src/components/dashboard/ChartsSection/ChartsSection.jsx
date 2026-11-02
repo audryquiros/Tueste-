@@ -23,7 +23,17 @@ export default function ChartsSection({ result, scenarios, inputs }) {
     scenarios.forEach((s) => { row[s.key] = s.result.cashCurve[month]?.value ?? null; });
     return row;
   });
-  const ltvData = [{ name: "Cliente", cac: result.cacReal, ltv: result.ltv }];
+  // Cada alternativa se representa como un punto: X = CAC real, Y = LTV a 12 meses.
+  const ltvScenarios = scenarios.map((scenario, index) => ({
+    name: scenario.label,
+    cac: scenario.result.cacReal,
+    ltv: scenario.result.ltv,
+    color: ["#4D83C6", "#D9534F", "#E2A52B"][index % 3],
+  }));
+  const maxCac = Math.max(...ltvScenarios.map((point) => point.cac), 1);
+  const maxLtv = Math.max(...ltvScenarios.map((point) => point.ltv), 1);
+  const ltvXAxisMax = Math.ceil(maxCac * 1.15 / 10) * 10;
+  const ltvYAxisMax = Math.ceil(Math.max(maxLtv, ltvXAxisMax * 3) * 1.08 / 10) * 10;
   const customerData = CASE_DATA.history.map((point) => ({
     ...point,
     marginal: point.investment === 0 ? null : getMarginalCAC(point.investment),
@@ -58,14 +68,15 @@ export default function ChartsSection({ result, scenarios, inputs }) {
       <ChartCard title="LTV frente al CAC" subtitle="LTV y CAC en USD/cliente; líneas de referencia de relación 1:1 y 3:1.">
         <div className="h-[280px] w-full min-w-0">
         <ResponsiveContainer>
-          <ScatterChart margin={{ top: 18, right: 20, left: 8, bottom: 18 }}>
+          <ScatterChart margin={{ top: 34, right: 20, left: 8, bottom: 18 }}>
             <CartesianGrid stroke="#eadfd7" />
-            <XAxis type="number" dataKey="cac" name="CAC" tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "CAC (USD/cliente)", position: "insideBottom", offset: -10, fontSize: 11 }} />
-            <YAxis type="number" dataKey="ltv" name="LTV" tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "LTV (USD/cliente)", angle: -90, position: "insideLeft", fontSize: 11 }} />
-            <Tooltip contentStyle={tooltipStyle} formatter={(v) => money(v)} />
-            <ReferenceLine segment={[{ x: 0, y: 0 }, { x: Math.max(result.cacReal, result.ltv) * 1.1, y: Math.max(result.cacReal, result.ltv) * 1.1 }]} stroke="#D9A329" strokeDasharray="5 4" label={{ value: "1:1", fontSize: 10 }} />
-            <ReferenceLine segment={[{ x: 0, y: 0 }, { x: Math.max(result.cacReal, result.ltv / 3) * 1.1, y: Math.max(result.cacReal, result.ltv / 3) * 3.3 }]} stroke="#32835B" strokeDasharray="5 4" label={{ value: "3:1", fontSize: 10 }} />
-            <Scatter data={ltvData} fill="#B85D08" />
+            <XAxis type="number" dataKey="cac" name="CAC" domain={[0, ltvXAxisMax]} tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "CAC (USD/cliente)", position: "insideBottom", offset: -10, fontSize: 11 }} />
+            <YAxis type="number" dataKey="ltv" name="LTV" domain={[0, ltvYAxisMax]} tickFormatter={(v) => `$${Math.round(v)}`} tick={{ fontSize: 10 }} label={{ value: "LTV (USD/cliente)", angle: -90, position: "insideLeft", fontSize: 11 }} />
+            <Tooltip contentStyle={tooltipStyle} formatter={(v, name) => [money(v), name === "cac" ? "CAC real" : "LTV a 12 meses"]} labelFormatter={(_, payload) => payload?.[0]?.payload?.name ?? "Escenario"} />
+            <ReferenceLine segment={[{ x: 0, y: 0 }, { x: ltvXAxisMax, y: ltvXAxisMax }]} stroke="#D9A329" strokeDasharray="5 4" label={{ value: "1:1", fontSize: 10, fill: "#A87912" }} />
+            <ReferenceLine segment={[{ x: 0, y: 0 }, { x: ltvXAxisMax, y: ltvXAxisMax * 3 }]} stroke="#32835B" strokeDasharray="5 4" label={{ value: "3:1", fontSize: 10, fill: "#32835B" }} />
+            {ltvScenarios.map((point) => <Scatter key={point.name} name={point.name} data={[point]} fill={point.color} shape="circle" />)}
+            <Legend verticalAlign="top" align="center" height={24} wrapperStyle={{ fontSize: 11, paddingBottom: 4 }} />
           </ScatterChart>
         </ResponsiveContainer>
         </div>
