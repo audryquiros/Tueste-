@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, WalletCards, Sparkles } from "lucide-react";
+import { ArrowRight, BarChart3, WalletCards, Sparkles, Users } from "lucide-react";
 import "./Home.css";
 
 export default function Home({ onSelect }) {
@@ -14,9 +14,9 @@ export default function Home({ onSelect }) {
 
       <section className="home-hero" id="inicio">
         <div className="home-copy">
-          <span className="home-eyebrow"><Sparkles size={14}/> UN CASO, DOS DESAFÍOS</span>
+          <span className="home-eyebrow"><Sparkles size={14}/> UN CASO, TRES DESAFÍOS</span>
           <h1><span>Las mejores decisiones</span><em>también se construyen.</em></h1>
-          <p>Explora el modelo financiero de Tueste, analiza su rentabilidad y descubre qué estrategia puede llevar el negocio más lejos.</p>
+          <p>Explora el modelo financiero de Tueste, analiza su rentabilidad y descubre cómo convertir las decisiones de caja y crecimiento en una estrategia accionable.</p>
         </div>
         <div className="home-art" aria-label="Ilustración abstracta de café">
           <div className="home-art-ring" />
@@ -41,6 +41,13 @@ export default function Home({ onSelect }) {
           <p>Proyecta 24 meses, prueba distintos planes de inversión y encuentra una estrategia que mantenga saludable la caja.</p>
           <span className="choice-action">Explorar el simulador <ArrowRight size={17}/></span>
           <span className="choice-number">03</span>
+        </button>
+        <button className="home-choice choice-four" onClick={() => onSelect("reto4")}>
+          <div className="choice-top"><span>NIVEL 04 <small>· GROWTH</small></span><Users size={22}/></div>
+          <h2>El programa<br/>de referidos</h2>
+          <p>Convierte clientes satisfechos en un canal de adquisición medible, con recompensas que respetan el límite de costo.</p>
+          <span className="choice-action">Explorar growth <ArrowRight size={17}/></span>
+          <span className="choice-number">04</span>
         </button>
       </section>
 
