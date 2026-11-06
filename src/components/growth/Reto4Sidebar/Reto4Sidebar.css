@@ -5,3 +5,18 @@
 .r4-sidebar-bottom{margin-top:auto;padding:15px}.r4-objective{background:#fff4e9;border-radius:14px;padding:16px}.r4-objective strong{font-size:13px;color:#994b08}.r4-objective p{font-size:12px;line-height:1.55;color:#847366;margin:7px 0 0}.r4-home-button{display:flex;align-items:center;gap:9px;width:100%;margin-top:12px;padding:14px 13px;border:1px solid #ead8ca;border-radius:12px;background:#fff;color:#78695d;font-size:12px;font-weight:700;cursor:pointer}.r4-home-button:hover{background:#fff8f1;color:#994b08}.r4-footnote{display:block;text-align:center;color:#a29184;font-size:9px;letter-spacing:.12em;margin-top:16px}
 .r4-overlay{display:none}.r4-sidebar.is-open{transform:translateX(0)}
 @media(max-width:900px){.r4-sidebar{position:fixed;left:0;top:0;transform:translateX(-102%);transition:transform .2s ease;box-shadow:12px 0 30px #2b1b1715}.r4-overlay{display:block;position:fixed;inset:0;z-index:29;background:#21160f66;border:0}}
+
+/* Sidebar fijo: conserva la proporción del diseño y nunca comprime el contenido. */
+.r4-sidebar { width:304px; height:100vh; min-height:0; position:fixed; left:0; top:0; }
+.r4-main { margin-left:304px; }
+.r4-nav-wrap { padding:22px 14px; }
+.r4-nav-item { min-height:60px; }
+.r4-sidebar-bottom { padding:13px; }
+.r4-objective { padding:14px; }
+.r4-objective p { font-size:11px; }
+.r4-home-button { margin-top:10px; padding:12px 13px; }
+.r4-footnote { margin-top:12px; }
+@media(max-width:900px){
+  .r4-sidebar { width:304px; position:fixed; }
+  .r4-main { margin-left:0; }
+}
